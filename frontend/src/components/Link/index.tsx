@@ -8,7 +8,11 @@ type LinkNavigationProps = {
 
 const LinkNavigation = ({ to, children, onClick }: LinkNavigationProps) => {
   return (
-    <Link className="font-bold no-underline hover:underline mr-2" to={to} onClick={onClick}>
+    <Link
+      className="flex gap-1 font-bold no-underline hover:underline mr-2"
+      to={to}
+      onClick={onClick}
+    >
       {children}
     </Link>
   );
