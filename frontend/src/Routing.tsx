@@ -1,8 +1,8 @@
 import { Route, Routes } from "react-router-dom";
-import Home from "./Home";
-import Login from "./Login";
-import Dashboard from "./Dashboard";
-import Error from "./Error";
+import Home from "./Pages/Home";
+import Login from "./Pages/Login";
+import Dashboard from "./Pages/Dashboard";
+import Error from "./Pages/Error";
 
 const Routing = () => (
   <Routes>
