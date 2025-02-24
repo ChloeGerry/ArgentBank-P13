@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Button from "@/components/Button";
-import ErrorText from "@/components/Error";
+import Message from "@/components/Message";
 import Input from "@/components/Input";
 import Header from "@/components/layout/Header";
 import { AppDispatch } from "@/utils/store";
@@ -75,7 +75,7 @@ const Signup = () => {
                 />
               );
             })}
-            <ErrorText text={error} />
+            <Message text={error} />
             <Button
               className="block w-full text-base mt-4 mb-8 underline"
               text="Sign up"

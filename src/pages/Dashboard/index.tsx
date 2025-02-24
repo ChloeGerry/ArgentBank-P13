@@ -6,7 +6,7 @@ import Header from "@/components/layout/Header";
 import Input from "@/components/Input";
 import Button from "@/components/Button";
 import Account from "@/components/Account";
-import ErrorText from "@/components/Error";
+import Message from "@/components/Message";
 import { RootState } from "@/reducers";
 import config from "@/config";
 import { editProfile, getProfile } from "@/actions/profile.action";
@@ -140,9 +140,9 @@ const Dashboard = () => {
               })}
             </div>
             {formStatus.onSuccess ? (
-              <ErrorText text={formStatus.message} textColor="text-green-800" />
+              <Message text={formStatus.message} textColor="text-green-800" />
             ) : (
-              <ErrorText text={formStatus.message} />
+              <Message text={formStatus.message} />
             )}
             <div className="flex gap-4">
               <Button

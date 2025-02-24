@@ -7,7 +7,7 @@ import Header from "@/components/layout/Header";
 import Button from "@/components/Button";
 import Input from "@/components/Input";
 import LinkNavigation from "@/components/Link";
-import ErrorText from "@/components/Error";
+import Message from "@/components/Message";
 import { RootState } from "@/reducers";
 import config from "@/config";
 import { getProfile } from "@/actions/profile.action";
@@ -132,7 +132,7 @@ const Login = () => {
                 />
               );
             })}
-            <ErrorText text={error} />
+            <Message text={error} />
             <div className="flex">
               <input
                 type="checkbox"
