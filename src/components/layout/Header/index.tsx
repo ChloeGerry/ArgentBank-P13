@@ -1,10 +1,11 @@
+import { useDispatch, useSelector } from "react-redux";
+import { useCookies } from "react-cookie";
 import { Link } from "react-router-dom";
 import LinkNavigation from "@/components/Link";
-import { ROUTES } from "@/utils/constants";
-import { useDispatch, useSelector } from "react-redux";
-import { logout } from "@/actions/login.action";
 import { RootState } from "@/reducers";
+import { logout } from "@/actions/login.action";
 import { AppDispatch } from "@/utils/store";
+import { ROUTES } from "@/utils/constants";
 
 type HeaderProps = {
   isLogged: boolean;
@@ -13,6 +14,7 @@ type HeaderProps = {
 const Header = ({ isLogged }: HeaderProps) => {
   const profile = useSelector((state: RootState) => state.profileReducer);
   const dispatch: AppDispatch = useDispatch();
+  const removeCookie = useCookies(["token", "expirationDate"])[2];
 
   return (
     <header>
@@ -28,13 +30,20 @@ const Header = ({ isLogged }: HeaderProps) => {
               <img src="/assets/icons/user.svg" className="w-4" />{" "}
               {profile.data && profile.data.firstName}
             </LinkNavigation>
-            <LinkNavigation to={ROUTES.HOME} onClick={() => dispatch(logout())}>
-              <img src="/assets/icons/logout.svg" className="w-[14px]" /> Sign Out
+            <LinkNavigation
+              to={ROUTES.HOME}
+              onClick={() => {
+                removeCookie("token");
+                removeCookie("expirationDate");
+                dispatch(logout());
+              }}
+            >
+              <img src="/assets/icons/logout.svg" className="w-[14px]" /> Sign out
             </LinkNavigation>
           </div>
         ) : (
           <LinkNavigation to={ROUTES.LOGIN}>
-            <img src="/assets/icons/user.svg" className="w-4" /> Sign In
+            <img src="/assets/icons/user.svg" className="w-4" /> Sign in
           </LinkNavigation>
         )}
       </nav>
