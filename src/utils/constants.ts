@@ -7,6 +7,7 @@ export const ROUTES = {
 export const GET_LOGIN_FETCHING = "GET_LOGIN_FETCHING";
 export const GET_LOGIN_RESOLVED = "GET_LOGIN_RESOLVED";
 export const GET_LOGIN_REJECTED = "GET_LOGIN_REJECTED";
+export const SERVER_ERROR = "SERVER_ERROR";
 export const LOG_OUT = "LOG_OUT";
 
 export const GET_PROFILE_FETCHING = "GET_PROFILE_FETCHING";
@@ -20,3 +21,5 @@ export const ADD_PROFILE_RESOLVED = "ADD_PROFILE_RESOLVED";
 export const ADD_PROFILE_REJECTED = "ADD_PROFILE_REJECTED";
 
 export const ONE_HOUR = 1000 * 60 * 60;
+
+export const lettersRegex = /^[A-Za-z]+$/;
