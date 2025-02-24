@@ -43,7 +43,7 @@ const Home = () => {
             alt="bank tree"
             className="w-full relative object-cover h-[300px] lg:h-[400px]"
           />
-          <section className="absolute top-[11%] left-[50%] -translate-x-1/2 bg-white p-8 m-8 text-left w-[264px] lg:w-[364px] lg:top-[14%] lg:left-[77%]">
+          <section className="absolute top-[11%] xs:left-[42%] -translate-x-1/2 bg-white p-8 m-8 text-left w-[264px] sm:left-[50%]  lg:w-[364px] lg:top-[14%] lg:left-[77%]">
             <h1 className="sr-only">Promoted Content</h1>
             {descriptions.map((description, index) => {
               return <Description key={index} text={description} />;

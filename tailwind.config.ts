@@ -9,6 +9,9 @@ export default {
         mediumGrey: "#B8C4CE",
         darkGrey: "#2c3e50",
       },
+      screens: {
+        xs: "0px",
+      },
     },
   },
   plugins: [],
