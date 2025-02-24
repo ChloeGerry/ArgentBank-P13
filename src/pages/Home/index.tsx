@@ -1,13 +1,41 @@
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { useCookies } from "react-cookie";
 import Header from "@/components/layout/Header";
 import Description from "@/components/Description";
 import Feature from "@/components/Folder";
+import { getProfile } from "@/actions/profile.action";
+import { AppDispatch } from "@/utils/store";
 import { descriptions } from "@/data/descriptions";
 import { features } from "@/data/features";
+import { decryptToken } from "@/utils/helpers/decryptToken";
+import config from "@/config";
 
 const Home = () => {
+  const [isUserLogged, setIsUserLogged] = useState(false);
+  const dispatch: AppDispatch = useDispatch();
+  const cookies = useCookies(["token", "expirationDate"])[0];
+  const removeCookie = useCookies(["token", "expirationDate"])[2];
+  const secretKey = config.SECRET_KEY;
+
+  useEffect(() => {
+    if (cookies.token) {
+      const decrytedToken = decryptToken(cookies.token, secretKey);
+
+      if (!decrytedToken) {
+        removeCookie("token");
+        removeCookie("expirationDate");
+        window.location.reload();
+      }
+
+      dispatch(getProfile(decrytedToken));
+      setIsUserLogged(true);
+    }
+  }, []);
+
   return (
     <>
-      <Header isLogged={false} />
+      <Header isLogged={isUserLogged} />
       <main className="flex flex-col">
         <>
           <img
