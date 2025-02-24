@@ -1,0 +1,211 @@
+openapi: 3.0.0
+info:
+  title: Argent Bank API
+  version: 0.1.0
+
+paths:
+  /accounts:
+    get:
+      summary: Return a list of accounts
+      parameters:
+        - in: header
+          name: token
+          schema:
+            type: string
+          required: true
+          description: Token of the user
+      responses:
+        "200":
+          description: A JSON array of user accounts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Account"
+        "400":
+          description: Bad request. User token must be a string
+        "401":
+          description: Authorization information is missing or invalid
+        "404":
+          description: A user with the specified token was not found
+        "5XX":
+          description: Unexpected error
+
+  /accounts/{accountId}/transactions:
+    get:
+      summary: Return a list of transactions for an account for the last 30 days
+      parameters:
+        - in: header
+          name: token
+          schema:
+            type: string
+          required: true
+          description: Token of the user
+        - in: path
+          name: accountId
+          schema:
+            type: integer
+          required: true
+          description: ID of the account to get transactions
+        - in: query
+          name: category
+          schema:
+            $ref: "#/components/schemas/TransactionCategories"
+          required: false
+          description: Category of the transactions to get
+        - in: query
+          name: date
+          schema:
+            type: string
+          required: false
+          description: Date of the transactions to get
+      responses:
+        "200":
+          description: A JSON array of user account's transactions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Transaction"
+        "400":
+          description: Bad request. User token must be a string. Account ID must be an integer and larger than 0
+        "401":
+          description: Authorization information is missing or invalid
+        "404":
+          description: Transactions with the specified account ID was not found
+        "5XX":
+          description: Unexpected error
+
+  /accounts/{accountId}/transactions/{transactionId}:
+    patch:
+      summary: Return an updated transaction
+      parameters:
+        - in: header
+          name: token
+          schema:
+            type: string
+          required: true
+          description: Token of the user
+        - in: path
+          name: accountId
+          schema:
+            type: integer
+          required: true
+          description: ID of the account
+        - in: path
+          name: transactionId
+          schema:
+            type: string
+          required: true
+          description: ID of the transaction
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateTransaction"
+            example:
+              category: FOOD
+              note: Kevin's birthday cake
+      responses:
+        "200":
+          description: A JSON object of the updated transaction
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Transaction"
+              example:
+                id: 6417252b768abc5544e0dc67
+                date: 2023-06-16T14:22:29.387Z
+                title: Boneshaker Donuts
+                amount: 8.25
+                balance: 298.6
+                type: CASH
+                category: FOOD
+                note: Kevin's birthday cake
+        "400":
+          description: Bad request. User token must be a string. Account ID must be an integer and larger than 0. Transaction ID must be a string.
+        "401":
+          description: Authorization information is missing or invalid
+        "404":
+          description: Transaction with the specified ID was not found
+        "5XX":
+          description: Unexpected error
+
+components:
+  schemas:
+    TransactionCategories:
+      type: string
+      enum: [BOOK, RENT, FOOD]
+
+    AccountType:
+      type: string
+      enum: [CHECKING, SAVING, CREDIT_CARD]
+
+    TransactionType:
+      type: string
+      enum: [CASH, CHEQUE, CREDIT_CARD, DEBIT_CARD, BANK_TRANSFER]
+
+    Account:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Numeric ID of the account
+          example: 2515
+        type:
+          type: string
+          enum: [CHECKING, SAVING, CREDIT_CARD]
+          description: Type of account
+          example: CHECKING
+        amount:
+          type: number
+          description: Amount of the account
+          example: 1370.45
+        balance:
+          type: string
+          enum: [AVAILABLE, CURRENT]
+          description: Balance of the account
+          example: AVAILABLE
+
+    Transaction:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the transaction
+          example: 6417252b768abc5544e0dc67
+        date:
+          type: string
+          description: Date of the transaction
+          example: 2023-06-16T14:22:29.387Z
+        title:
+          type: string
+          description: Title of the transaction
+          example: Boneshaker Donuts
+        amount:
+          type: number
+          description: Amount of the transaction
+          example: 8.25
+        balance:
+          type: number
+          description: Balance of the account
+          example: 298.6
+        type:
+          $ref: "#/components/schemas/TransactionType"
+        category:
+          $ref: "#/components/schemas/TransactionCategories"
+        note:
+          type: string
+          description: Note of the transaction
+          example: Bakery
+
+    UpdateTransaction:
+      type: object
+      properties:
+        category:
+          $ref: "#/components/schemas/TransactionCategories"
+        note:
+          type: string
+          description: Note of the transaction
