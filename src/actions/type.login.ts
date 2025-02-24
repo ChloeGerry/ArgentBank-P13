@@ -3,6 +3,7 @@ import {
   GET_LOGIN_REJECTED,
   GET_LOGIN_RESOLVED,
   LOG_OUT,
+  SERVER_ERROR,
 } from "@/utils/constants";
 
 export type Login = {
@@ -22,6 +23,10 @@ export type GetLoginResolvedAction = {
   payload: Login;
 };
 
+export type ServerErrorAction = {
+  type: typeof SERVER_ERROR;
+};
+
 export type LogOutAction = {
   type: typeof LOG_OUT;
 };
@@ -30,6 +35,7 @@ export type LoginActionTypes =
   | GetLoginFetchingAction
   | GetLoginRejectedAction
   | GetLoginResolvedAction
+  | ServerErrorAction
   | LogOutAction;
 
 export type GetLoginParams = {
