@@ -1,8 +1,17 @@
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useCookies } from "react-cookie";
 import { useNavigate, useParams } from "react-router-dom";
 import { twMerge } from "tailwind-merge";
 import Account from "@/components/Account";
 import Collapse from "@/components/Collapse";
 import Header from "@/components/layout/Header";
+import { RootState } from "@/reducers";
+import config from "@/config";
+import { AppDispatch } from "@/utils/store";
+import { getProfile } from "@/actions/profile.action";
+import { getCurrentDate } from "@/utils/helpers/getCurrentDate";
+import { decryptToken } from "@/utils/helpers/decryptToken";
 import { accounts } from "@/data/accounts";
 import { transactions, transactionsHeader } from "@/data/transactions";
 import { ROUTES } from "@/utils/constants";
@@ -11,6 +20,33 @@ const Transactions = () => {
   const userId = useParams();
   const accountId = userId.accountId;
   const navigate = useNavigate();
+  const profile = useSelector((state: RootState) => state.profileReducer);
+  const dispatch: AppDispatch = useDispatch();
+  const cookies = useCookies(["token", "expirationDate"])[0];
+  const removeCookie = useCookies(["token", "expirationDate"])[2];
+  const currentDate = getCurrentDate();
+  const expirationDateExpired = currentDate > cookies.expirationDate;
+  const secretKey = config.SECRET_KEY;
+
+  useEffect(() => {
+    if (!profile.data && cookies.token) {
+      const decrytedToken = decryptToken(cookies.token, secretKey);
+
+      if (!decrytedToken) {
+        removeCookie("token");
+        removeCookie("expirationDate");
+        navigate(`${ROUTES.LOGIN}`);
+      }
+
+      dispatch(getProfile(decrytedToken));
+    }
+
+    if (expirationDateExpired || !cookies.token) {
+      removeCookie("token");
+      removeCookie("expirationDate");
+      navigate(`${ROUTES.LOGIN}`);
+    }
+  }, [profile.data]);
 
   const currentAccount = accounts.find((account) => {
     return account.id === Number(accountId);
