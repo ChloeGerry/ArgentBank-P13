@@ -10,6 +10,7 @@ import {
   GET_PROFILE_FETCHING,
   GET_PROFILE_REJECTED,
   GET_PROFILE_RESOLVED,
+  SERVER_ERROR,
 } from "@/utils/constants";
 import { EditProfileParams, SignupParams } from "./type.profile";
 
@@ -23,9 +24,16 @@ export const getProfile = (token: string) => {
         },
       });
       dispatch({ type: GET_PROFILE_RESOLVED, payload: result.data.body });
-    } catch (error) {
-      dispatch({ type: GET_PROFILE_REJECTED });
-      console.log(error);
+    } catch (error: any) {
+      if (error.code === "ERR_NETWORK") {
+        dispatch({ type: SERVER_ERROR });
+        console.log("ERR_NETWORK", error);
+      }
+
+      if (error.code === "ERR_BAD_REQUEST") {
+        dispatch({ type: GET_PROFILE_REJECTED });
+        console.log("ERR_BAD_REQUEST", error);
+      }
     }
   };
 };

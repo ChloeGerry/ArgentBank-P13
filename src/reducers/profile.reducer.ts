@@ -10,18 +10,21 @@ import {
   ADD_PROFILE_REJECTED,
   ADD_PROFILE_RESOLVED,
   LOG_OUT,
+  SERVER_ERROR,
 } from "@/utils/constants";
 
 export type ProfileState = {
   data: Profile | null;
   isLoading: boolean;
   hasAuthenticationFailed: boolean;
+  hasServerError: boolean;
 };
 
 const initialState: ProfileState = {
   data: null,
   isLoading: false,
   hasAuthenticationFailed: false,
+  hasServerError: false,
 };
 
 export default function profileReducer(state = initialState, action: ProfileActionTypes) {
@@ -40,6 +43,11 @@ export default function profileReducer(state = initialState, action: ProfileActi
         ...state,
         isLoading: false,
         hasAuthenticationFailed: true,
+      };
+    case SERVER_ERROR:
+      return {
+        ...state,
+        hasServerError: true,
       };
     case LOG_OUT:
       return { ...state, data: null, isLoading: false };

@@ -9,7 +9,7 @@ import {
   GET_PROFILE_REJECTED,
   GET_PROFILE_RESOLVED,
 } from "@/utils/constants";
-import { LogOutAction } from "./type.login";
+import { LogOutAction, ServerErrorAction } from "./type.login";
 
 export type Profile = {
   email: string;
@@ -68,6 +68,7 @@ export type ProfileActionTypes =
   | EditProfileRejectedAction
   | EditProfileResolvedAction
   | AddProfileFetchingAction
+  | ServerErrorAction
   | AddProfileRejectedAction
   | AddProfileResolvedAction;
 

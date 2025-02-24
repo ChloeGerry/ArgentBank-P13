@@ -29,7 +29,7 @@ const Login = () => {
   const [cookies, setCookie, removeCookie] = useCookies(["token", "expirationDate"]);
   const form = useRef<HTMLFormElement | null>(null);
   const [isUserRemembered, setUserRemembered] = useState(false);
-  const [error, setError] = useState<string>("");
+  const [error, setError] = useState("");
 
   const currentHeight = setHeight();
   const date = new Date().getTime() + ONE_HOUR;
@@ -63,6 +63,13 @@ const Login = () => {
 
     if (cookies.token) {
       const decrytedToken = decryptToken(cookies.token, secretKey);
+
+      if (!decrytedToken) {
+        removeCookie("token");
+        removeCookie("expirationDate");
+        navigate(`${ROUTES.LOGIN}`);
+      }
+
       dispatch(getProfile(decrytedToken));
     }
 

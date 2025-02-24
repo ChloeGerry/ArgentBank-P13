@@ -36,6 +36,10 @@ const Dashboard = () => {
   const secretKey = config.SECRET_KEY;
 
   useEffect(() => {
+    if (profile.hasServerError) {
+      navigate(`${ROUTES.LOGIN}`);
+    }
+
     if (!profile.data && cookies.token) {
       const decrytedToken = decryptToken(cookies.token, secretKey);
 
@@ -53,7 +57,7 @@ const Dashboard = () => {
       removeCookie("expirationDate");
       navigate(`${ROUTES.LOGIN}`);
     }
-  }, [profile.data]);
+  }, [profile.data, profile.hasServerError]);
 
   const resetFormStatus = () => {
     setFormStatus({
