@@ -68,9 +68,9 @@ const Login = () => {
         removeCookie("token");
         removeCookie("expirationDate");
         navigate(`${ROUTES.LOGIN}`);
+      } else {
+        dispatch(getProfile(decrytedToken));
       }
-
-      dispatch(getProfile(decrytedToken));
     }
 
     if (profile.data && cookies.token) {

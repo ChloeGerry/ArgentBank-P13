@@ -17,8 +17,8 @@ import { transactions, transactionsHeader } from "@/data/transactions";
 import { ROUTES } from "@/utils/constants";
 
 const Transactions = () => {
-  const userId = useParams();
-  const accountId = userId.accountId;
+  const userParams = useParams();
+  const accountId = userParams.accountId;
   const navigate = useNavigate();
   const profile = useSelector((state: RootState) => state.profileReducer);
   const dispatch: AppDispatch = useDispatch();
@@ -36,9 +36,9 @@ const Transactions = () => {
         removeCookie("token");
         removeCookie("expirationDate");
         navigate(`${ROUTES.LOGIN}`);
+      } else {
+        dispatch(getProfile(decrytedToken));
       }
-
-      dispatch(getProfile(decrytedToken));
     }
 
     if (expirationDateExpired || !cookies.token) {
@@ -53,7 +53,7 @@ const Transactions = () => {
   });
 
   if (!currentAccount) {
-    return navigate(`${ROUTES.DASHBOARD}/${userId.id}`);
+    return navigate(`${ROUTES.DASHBOARD}/${userParams.id}`);
   }
 
   return (

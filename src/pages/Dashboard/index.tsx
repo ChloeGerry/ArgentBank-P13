@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useCookies } from "react-cookie";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Header from "@/components/layout/Header";
 import Input from "@/components/Input";
 import Button from "@/components/Button";
@@ -17,7 +17,7 @@ import { accounts } from "@/data/accounts";
 import { editProfileForm } from "@/data/editProfileForm";
 import { decryptToken } from "@/utils/helpers/decryptToken";
 import { ButtonEnum } from "@/components/Button/type";
-import { ROUTES, lettersRegex } from "@/utils/constants";
+import { ROUTES, charactersRegex } from "@/utils/constants";
 
 const Dashboard = () => {
   const profile = useSelector((state: RootState) => state.profileReducer);
@@ -26,8 +26,9 @@ const Dashboard = () => {
   const cookies = useCookies(["token", "expirationDate"])[0];
   const removeCookie = useCookies(["token", "expirationDate"])[2];
   const navigate = useNavigate();
+  const userParams = useParams();
   const form = useRef<HTMLFormElement | null>(null);
-  const [formStatus, setFormStatus] = useState({
+  const [formStatus, setFormStatus] = useState<{ message: string; onSuccess: boolean }>({
     message: "",
     onSuccess: false,
   });
@@ -36,7 +37,7 @@ const Dashboard = () => {
   const secretKey = config.SECRET_KEY;
 
   useEffect(() => {
-    if (profile.hasServerError) {
+    if (profile.hasServerError || profile.data?.id !== userParams.id) {
       navigate(`${ROUTES.LOGIN}`);
     }
 
@@ -47,9 +48,9 @@ const Dashboard = () => {
         removeCookie("token");
         removeCookie("expirationDate");
         navigate(`${ROUTES.LOGIN}`);
+      } else {
+        dispatch(getProfile(decrytedToken));
       }
-
-      dispatch(getProfile(decrytedToken));
     }
 
     if (expirationDateExpired || !cookies.token) {
@@ -57,7 +58,7 @@ const Dashboard = () => {
       removeCookie("expirationDate");
       navigate(`${ROUTES.LOGIN}`);
     }
-  }, [profile.data, profile.hasServerError]);
+  }, [profile.data, profile.hasServerError, userParams.id]);
 
   const resetFormStatus = () => {
     setFormStatus({
@@ -85,8 +86,8 @@ const Dashboard = () => {
       lastName: (form.elements.namedItem("lastName") as HTMLInputElement).value,
     };
 
-    const isFirstNameMatchingRegex = lettersRegex.test(formData.firstName);
-    const isLastNameMatchingRegex = lettersRegex.test(formData.lastName);
+    const isFirstNameMatchingRegex = charactersRegex.test(formData.firstName);
+    const isLastNameMatchingRegex = charactersRegex.test(formData.lastName);
 
     if (
       formData.firstName &&

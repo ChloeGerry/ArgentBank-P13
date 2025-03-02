@@ -26,10 +26,10 @@ const Home = () => {
         removeCookie("token");
         removeCookie("expirationDate");
         window.location.reload();
+      } else {
+        dispatch(getProfile(decrytedToken));
+        setIsUserLogged(true);
       }
-
-      dispatch(getProfile(decrytedToken));
-      setIsUserLogged(true);
     }
   }, []);
 
