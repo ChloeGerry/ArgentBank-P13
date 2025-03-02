@@ -22,4 +22,13 @@ export const ADD_PROFILE_REJECTED = "ADD_PROFILE_REJECTED";
 
 export const ONE_HOUR = 1000 * 60 * 60;
 
-export const lettersRegex = /^[A-Za-z]+$/;
+export const charactersRegex = /^[A-Za-z]+$/;
+
+export const containThreeElementsRegex = /^.{3,}$/;
+
+export const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+export enum ERROR_TYPE {
+  ERR_NETWORK = "ERR_NETWORK",
+  ERR_BAD_REQUEST = "ERR_BAD_REQUEST",
+}

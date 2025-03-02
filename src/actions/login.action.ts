@@ -2,6 +2,7 @@ import axios from "axios";
 import { AppDispatch } from "@/utils/store";
 import config from "@/config";
 import {
+  ERROR_TYPE,
   GET_LOGIN_FETCHING,
   GET_LOGIN_REJECTED,
   GET_LOGIN_RESOLVED,
@@ -17,14 +18,14 @@ export const getLogin = (data: GetLoginParams) => {
       const result = await axios.post(`${config.BASE_URL}/api/v1/user/login`, data);
       dispatch({ type: GET_LOGIN_RESOLVED, payload: result.data.body });
     } catch (error: any) {
-      if (error.code === "ERR_NETWORK") {
+      if (error.code === ERROR_TYPE.ERR_NETWORK) {
         dispatch({ type: SERVER_ERROR });
-        console.log("ERR_NETWORK", error);
+        console.log(ERROR_TYPE.ERR_NETWORK, error);
       }
 
-      if (error.code === "ERR_BAD_REQUEST") {
+      if (error.code === ERROR_TYPE.ERR_BAD_REQUEST) {
         dispatch({ type: GET_LOGIN_REJECTED });
-        console.log("ERR_BAD_REQUEST", error);
+        console.log(ERROR_TYPE.ERR_BAD_REQUEST, error);
       }
     }
   };
