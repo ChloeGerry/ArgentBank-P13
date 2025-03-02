@@ -3,10 +3,12 @@ import { AppDispatch } from "@/utils/store";
 import config from "@/config";
 import {
   ADD_PROFILE_FETCHING,
+  ADD_PROFILE_REJECTED,
   ADD_PROFILE_RESOLVED,
   EDIT_PROFILE_FETCHING,
   EDIT_PROFILE_REJECTED,
   EDIT_PROFILE_RESOLVED,
+  ERROR_TYPE,
   GET_PROFILE_FETCHING,
   GET_PROFILE_REJECTED,
   GET_PROFILE_RESOLVED,
@@ -25,14 +27,14 @@ export const getProfile = (token: string) => {
       });
       dispatch({ type: GET_PROFILE_RESOLVED, payload: result.data.body });
     } catch (error: any) {
-      if (error.code === "ERR_NETWORK") {
+      if (error.code === ERROR_TYPE.ERR_NETWORK) {
         dispatch({ type: SERVER_ERROR });
-        console.log("ERR_NETWORK", error);
+        console.log(ERROR_TYPE.ERR_NETWORK, error);
       }
 
-      if (error.code === "ERR_BAD_REQUEST") {
+      if (error.code === ERROR_TYPE.ERR_BAD_REQUEST) {
         dispatch({ type: GET_PROFILE_REJECTED });
-        console.log("ERR_BAD_REQUEST", error);
+        console.log(ERROR_TYPE.ERR_BAD_REQUEST, error);
       }
     }
   };
@@ -62,6 +64,7 @@ export const addProfile = (data: SignupParams) => {
       const result = await axios.post(`${config.BASE_URL}/api/v1/user/signup`, data);
       dispatch({ type: ADD_PROFILE_RESOLVED, payload: result.data.body });
     } catch (error) {
+      dispatch({ type: ADD_PROFILE_REJECTED });
       console.log(error);
     }
   };
