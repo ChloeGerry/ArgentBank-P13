@@ -1,7 +1,13 @@
 import { InputEnum } from "@/components/Input/type";
 import { Profile } from "@/actions/type.profile";
 
-export const editProfileForm = (profile: Profile | null) => {
+type EditProfileType = {
+  label: string;
+  type: InputEnum;
+  placeholder?: string;
+};
+
+export const editProfileForm = (profile: Profile | null): EditProfileType[] => {
   return [
     {
       label: "firstName",

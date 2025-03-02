@@ -1,10 +1,11 @@
 import CryptoJS from "crypto-js";
 
-export const decryptToken = (encryptedToken: string, secretKey: string) => {
+export const decryptToken = (encryptedToken: string, secretKey: string): string | null => {
   try {
     const bytes = CryptoJS.AES.decrypt(encryptedToken, secretKey);
     return JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
   } catch (error) {
     console.log("Error when decryting token", error);
+    return null;
   }
 };

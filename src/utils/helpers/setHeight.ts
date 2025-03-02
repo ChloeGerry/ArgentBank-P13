@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-export const setHeight = () => {
+export const setHeight = (): number => {
   const [height, setHeight] = useState(0);
 
   useEffect(() => {

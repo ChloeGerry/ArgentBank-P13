@@ -1,4 +1,11 @@
-export const accounts = [
+type AccountsType = {
+  title: string;
+  amount: string;
+  description: string;
+  id: number;
+};
+
+export const accounts: AccountsType[] = [
   {
     title: "Argent Bank Checking (x8349)",
     amount: "$2,082.79",

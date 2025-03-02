@@ -1,6 +1,12 @@
 import { InputEnum } from "@/components/Input/type";
 
-export const signupForm = [
+type SignupFormType = {
+  label: string;
+  type: InputEnum;
+  text: string;
+};
+
+export const signupForm: SignupFormType[] = [
   {
     label: "email",
     type: InputEnum.TEXT,

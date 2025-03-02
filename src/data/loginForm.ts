@@ -1,6 +1,12 @@
 import { InputEnum } from "@/components/Input/type";
 
-export const loginForm = [
+type LoginFormType = {
+  label: string;
+  type: InputEnum;
+  text: string;
+};
+
+export const loginForm: LoginFormType[] = [
   {
     label: "username",
     type: InputEnum.TEXT,

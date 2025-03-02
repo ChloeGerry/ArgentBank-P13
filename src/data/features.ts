@@ -1,4 +1,11 @@
-export const features = [
+type FeaturesType = {
+  icon: string;
+  alt: string;
+  title: string;
+  text: string;
+};
+
+export const features: FeaturesType[] = [
   {
     icon: "/assets/icon-chat.png",
     alt: "Chat Icon",
