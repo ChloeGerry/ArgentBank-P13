@@ -53,7 +53,6 @@ const Signup = () => {
     }
 
     if (loginFormData) {
-      console.log("loginFormData", loginFormData);
       dispatch(getLogin(loginFormData));
     }
 
